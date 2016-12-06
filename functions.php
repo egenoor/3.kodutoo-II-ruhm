@@ -136,8 +136,8 @@
 		$stmt = $mysqli->prepare("
 		
 		SELECT id, username, movie_actor, movie_fav, movie_genre
-		FROM user_movies
-		");
+		FROM user_movies 
+		WHERE deleted IS NULL");
 		
 		echo $mysqli->error;
 		

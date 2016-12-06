@@ -12,7 +12,8 @@
 
 		$stmt = $mysqli->prepare("SELECT movie_actor, movie_fav, movie_genre FROM user_movies WHERE id=? 
 			AND deleted IS NULL");
-
+			//et näha, mis error on koodis täpsemalt kirjutame echo error
+		echo $mysqli->error;
 		$stmt->bind_param("i", $edit_id);
 		$stmt->bind_result($favActor, $favMov, $movGenre);
 		$stmt->execute();
@@ -28,7 +29,7 @@
 
 		}else{
 
-			header("Location: data.php");
+			header("Location: movies.php");
 			exit();
 		}
 
@@ -46,7 +47,7 @@
 
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 
-		$stmt = $mysqli->prepare("UPDATE user_movies SET plate=?, color=? WHERE id=? 
+		$stmt = $mysqli->prepare("UPDATE user_movies SET movie_actor=?, movie_fav=?, movie_genre=? WHERE id=? 
 			AND deleted IS NULL");
 
 		$stmt->bind_param("sssi",$favActor, $favMov, $movGenre, $id);

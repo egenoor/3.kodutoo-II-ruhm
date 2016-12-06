@@ -16,7 +16,7 @@ if(isset($_POST["update"])){
 }
 
 if(!isset($_GET["id"])) {
-    header("Location: data.php");
+    header("Location: movies.php");
     exit();
 }
 
@@ -30,7 +30,7 @@ if(isset($_GET["delete"])){
 
     deleteMovie($_GET["id"]);
 
-    header("Location: data.php");
+    header("Location: movies.php");
     exit();
 
 }
@@ -38,16 +38,29 @@ if(isset($_GET["delete"])){
 ?>
 
 <br>
-<a href="data.php"> Back </a>
+<a href="movies.php"> Back </a>
 
 <h2>Change information</h2>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
 	<input type="hidden" name="id" value="<?=$_GET["id"];?>" > 
-  	<label for="favActor" >Favorite actor</label><br>
-	<input id="favActor" name="favActor" type="text" value="<?php echo $i->favActor;?>" ><br><br>
-  	<label for="favMov" >Favorite movie</label><br>
-	<input id="favMov" name="favMov" type="text" value="<?php echo $i->favMov;?>" ><br><br>
-  	
+  	<label for="movie_actor" >Favorite actor</label><br>
+	<input id="movie_actor" name="movie_actor" type="text" value="<?php echo $c->movie_actor;?>" ><br><br>
+  	<label for="movie_fav" >Favorite movie</label><br>
+	<input id="movie_fav" name="movie_fav" type="text" value="<?php echo $c->movie_fav;?>" ><br><br>
+	<label for="movie_genre" >Favorite genre</label><br>
+	<select name="movie_genre">
+            <option value="Action" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Action</option>
+            <option value="Comedy" <?php echo $result['genre'] == 'Comedy' ? 'selected' : ''?>>Comedy</option>
+            <option value="Crime" <?php echo $result['genre'] == 'Crime' ? 'selected' : ''?>>Crime</option>
+            <option value="Adventure" <?php echo $result['genre'] == 'Adventure' ? 'selected' : ''?> >Adventure</option>
+            <option value="War" <?php echo $result['genre'] == 'War' ? 'selected' : ''?>>War</option>
+            <option value="Sci-Fi" <?php echo $result['genre'] == 'Sci-Fi' ? 'selected' : ''?>>Sci-Fi</option>
+            <option value="Romance" <?php echo $result['genre'] == 'Romance' ? 'selected' : ''?>>Romance</option>
+            <option value="Horror" <?php echo $result['genre'] == 'Horror' ? 'selected' : ''?> >Horror</option>
+            <option value="Documentary" <?php echo $result['genre'] == 'Documentary' ? 'selected' : ''?>>Documentary</option>
+            <option value="Fantasy" <?php echo $result['genre'] == 'Fantasy' ? 'selected' : ''?>>Fantasy</option>
+        </select><br><br>
+		
 	<input type="submit" name="update" value="Salvesta">
   </form>
   
