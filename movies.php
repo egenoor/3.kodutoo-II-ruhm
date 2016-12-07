@@ -57,12 +57,18 @@ if(isset($_POST["favActor"]) &&
 
     saveData($_SESSION["userName"], $_POST["favActor"], $_POST["favMov"], $_POST["movGenre"]);
 
-    } else {
+    } 
+elseif(isset($_POST["favActor"]) &&
+		isset($_POST["favMov"]) &&
+		isset($_POST["movGenre"]) &&
+		empty($_POST["favActor"]) &&
+		empty($_POST["favMov"]) &&
+		empty($_POST["movGenre"])) {
 
         $error = "Täida kõik väljad";
     }
 
-echo "$error";
+echo $error;
 //saan filmi andmed
 $saveData = getMovieData();
 
@@ -99,6 +105,7 @@ $saveData = getMovieData();
 
         <label>Movie genre:</label><br>
         <select name="movGenre">
+			<option value="" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Genre</option>
             <option value="Action" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Action</option>
             <option value="Comedy" <?php echo $result['genre'] == 'Comedy' ? 'selected' : ''?>>Comedy</option>
             <option value="Crime" <?php echo $result['genre'] == 'Crime' ? 'selected' : ''?>>Crime</option>
@@ -110,7 +117,6 @@ $saveData = getMovieData();
             <option value="Documentary" <?php echo $result['genre'] == 'Documentary' ? 'selected' : ''?>>Documentary</option>
             <option value="Fantasy" <?php echo $result['genre'] == 'Fantasy' ? 'selected' : ''?>>Fantasy</option>
         </select>
-
         <input type="submit" value="Submit">
 
 
