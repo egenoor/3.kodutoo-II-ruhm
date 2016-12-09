@@ -7,7 +7,7 @@
 	$database = "if16_ege";
 	$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
 	
-	require("../class/Helper.class.php");
+	require("class/Helper.class.php");
 	$Helper = new Helper();
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-	require("functions.php");
+	require("../functions.php");
 	
 	require("../class/Movie.class.php");
 	$Movie = new Movie($mysqli);
@@ -73,7 +73,8 @@
 
 	echo $error;
 	//saan filmi andmed
-	$saveData = getMovieData();
+	$Movie->save($Helper->cleanInput($_POST["movie_actor"]), $Helper->cleanInput($_POST["movie_fav"]),
+		$Helper->cleanInput($_POST["movie_genre"]));
 	
 		//sorteerib
 	if(isset($_GET["sort"]) && isset($_GET["direction"])){
