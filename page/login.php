@@ -13,8 +13,6 @@
 		exit();
 	}
 
-	echo "<body style='background-color:lightgrey'>";
-
 	//MUUTUJAD
 	$loginUsername = "";
 	$loginUsernameError = "";
@@ -127,7 +125,8 @@
 	//peab olema email ja parool
 	//ja ühtegi errorit
 
-	if ( isset($_POST["signupEmail"]) &&
+	if ( isset($_POST["signupUsername"]) &&
+	    isset($_POST["signupEmail"]) &&
 		isset($_POST["signupPassword"]) &&
 		isset($_POST["signupWebsite"]) &&
 		isset($_POST["signupComment"]) &&
@@ -156,98 +155,97 @@
 
 		$error = $User->login($Helper->cleanInput($_POST["loginUsername"]), 
 		$Helper->cleanInput($_POST["loginPassword"]));
-		
-		echo $this->connection->error;
+
 
 	}
 
 	?>
 
-	<?php require("../header.php"); ?>
+<?php require("../header.php"); ?>
 
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>Sisselogimise lehekülg</title>
-	</head>
-	<body>
+<div class="container">
 
-	<h1>Log in</h1>
+    <div class="row">
 
-	<form method="POST">
+        <div class="col-sm-3">
 
-		<p style="color:red;"><?=$error;?></p>
+                <h1>Log in</h1>
 
-		<label>Username:</label><br>
-		<input name="loginUsername" type="text" value="<?php if(isset($_POST["loginUsername"])) 
-		{ echo $_POST['loginUsername'];}?>">
-		<?php echo $loginUsernameError; ?>
-		<br><br>
-		<input name="loginPassword" type="password" placeholder="Password">
-		<br><br>
-		<input type="submit" value="Log in">
+                <form method="POST">
 
-	</form>
+                    <p style="color:red;"><?=$error;?></p>
 
-	<h1>Create account</h1>
+                    <label>Username:</label><br>
+                    <input name="loginUsername" type="text" class="form-control" value="<?php if(isset($_POST["loginUsername"]))
+                    { echo $_POST['loginUsername'];}?>">
+                    <?php echo $loginUsernameError; ?>
+                    <br><br>
+                    <input name="loginPassword" type="password" class="form-control" placeholder="Password">
+                    <br><br>
+                    <input class="btn btn-default btn-sm" type="submit" value="Log in">
 
-	<form method="POST">
+                </form>
+        </div>
 
-		<label>Username:</label><br>
-		<input name="signupUsername" type="text" value="<?=$signupUsername;?>">
-		<?php echo $signupUsernameError; ?>
+        <div class="col-sm-3 col-sm-offset-3">
 
-		<br><br>
+            <h1>Create account</h1>
+                <form method="POST">
 
-		<label>Email:</label><br>
-		<input name="signupEmail" type="text" value="<?=$signupEmail;?>">
-		<?php echo $signupEmailError; ?>
+                    <label>Username:</label><br>
+                    <input name="signupUsername" type="text" value="<?=$signupUsername;?>">
+                    <?php echo $signupUsernameError; ?>
 
-		<br><br>
+                    <br><br>
 
-		<input name="signupPassword" type="password" placeholder="Password">
-		<?php echo $signupPasswordError; ?>
+                    <label>Email:</label><br>
+                    <input name="signupEmail" type="text" value="<?=$signupEmail;?>">
+                    <?php echo $signupEmailError; ?>
 
-		<br><br>
+                    <br><br>
 
-		<label>Website:</label><br>
-		<input name="signupWebsite" type="text" value="<?=$signupWebsite;?>">
+                    <input name="signupPassword" type="password" placeholder="Password">
+                    <?php echo $signupPasswordError; ?>
 
-		<br><br>
+                    <br><br>
 
-		<label>Comment:</label><br>
-		<textarea name="signupComment" rows="5" cols="40"><?=$signupComment;?></textarea>
-		<?php echo $signupCommentError; ?>
+                    <label>Website:</label><br>
+                    <input name="signupWebsite" type="text" value="<?=$signupWebsite;?>">
 
-		<br><br>
+                    <br><br>
 
-		<label>Age:</label><br>
-		<input name="signupAge" type="age" value="<?=$signupAge;?>">
+                    <label>Comment:</label><br>
+                    <textarea class="form-control" rows="5" cols="10"><?=$signupComment;?></textarea>
+                    <?php echo $signupCommentError; ?>
 
-		<br><br>
-		<label>Gender:</label><br>
+                    <br><br>
 
-		<?php if($signupGender == "male") { ?>
-			<input type="radio" name="signupGender" value="male" checked> Male<br>
-		<?php }else { ?>
+                    <label>Age:</label><br>
+                    <input name="signupAge" type="number" value="<?=$signupAge;?>">
 
-			<input type="radio" name="signupGender" value="male"> Male<br>
-		<?php } ?>
+                    <br><br>
+                    <label>Gender:</label><br>
 
-		<?php if($signupGender == "female") { ?>
-			<input type="radio" name="signupGender" value="female" checked> Female<br>
-		<?php }else { ?>
-			<input type="radio" name="signupGender" value="female"> Female<br>
-		<?php } ?>
+                    <?php if($signupGender == "male") { ?>
+                        <input type="radio" name="signupGender" value="male" checked> Male<br>
+                    <?php }else { ?>
 
-		<br>
+                        <input type="radio" name="signupGender" value="male"> Male<br>
+                    <?php } ?>
 
-		<input type="submit" value="Create account">
+                    <?php if($signupGender == "female") { ?>
+                        <input type="radio" name="signupGender" value="female" checked> Female<br>
+                    <?php }else { ?>
+                        <input type="radio" name="signupGender" value="female"> Female<br>
+                    <?php } ?>
 
-	</form>
+                    <br>
 
+                    <input class="btn btn-default btn-sm" type="submit" value="Create account">
+                </form>
+        </div>
+    </div>
 
-	</body>
-	</html>
+</div>
 
-	<?php require("../footer.php"); ?>
+<?php require("../footer.php"); ?>

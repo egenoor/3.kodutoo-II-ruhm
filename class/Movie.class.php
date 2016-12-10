@@ -42,6 +42,7 @@ class Movie{
                 echo "ei otsi";
 
                 $stmt = $this->connection->prepare("
+                    SELECT id, username, movie_actor, movie_fav, movie_genre
                     FROM user_movies
                     WHERE deleted IS NULL 
                     ORDER BY $sort $orderBy
