@@ -129,13 +129,13 @@ class Movie{
 
         }
 
-        function save($Username, $favActor, $favMov, $movGenre){
+        function save($userName, $favActor, $favMov, $movGenre){
 
             $stmt = $this->connection->prepare("INSERT INTO user_movies(username, movie_actor, movie_fav, movie_genre) VALUES (?, ?, ?, ?)");
 
             echo $this->connection->error;
 
-            $stmt->bind_param("ssss", $Username, $favActor, $favMov, $movGenre);
+            $stmt->bind_param("ssss", $userName, $favActor, $favMov, $movGenre);
 
             if ($stmt->execute()) {
                 echo "salvestamine �nnestus";
