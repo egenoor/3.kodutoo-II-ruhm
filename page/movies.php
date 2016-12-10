@@ -180,7 +180,7 @@
 		foreach($movieData as $i){
 			$html .= "<tr>";
 				$html .= "<td>".$i->id."</td>";
-				$html .= "<td>".$i->Username."</td>";
+				$html .= "<td>".$i->username."</td>";
 				$html .= "<td>".$i->favActor."</td>";
 				$html .= "<td>".$i->favMov."</td>";
 				$html .= "<td>".$i->favGenre."</td>";
