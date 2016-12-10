@@ -1,37 +1,38 @@
 <?php
 //edit.php
-require("functions.php");
-require("editFunctions.php");
-
+require("../functions.php");
+require("../class/Movie.class.php");
+$Movie = new Movie($mysqli);
 //var_dump($_POST);
 
 //kas kasutaja uuendab andmeid
 if(isset($_POST["update"])){
 
-    updateMovie(cleanInput($_POST["id"]), cleanInput($_POST["movie_actor"]), cleanInput($_POST["movie_fav"]), cleanInput($_POST["movie_genre"]));
+    $Movie->update($Helper->cleanInput($_POST["id"]),$Helper->cleanInput($_POST["movie_actor"]),
+        $Helper->cleanInput($_POST["movie_fav"]),$Helper->cleanInput($_POST["movie_genre"]));
 
     header("Location: edit.php?id=".$_POST["id"]."&success=true");
     exit();
 
 }
 
-if(!isset($_GET["id"])) {
-    header("Location: movies.php");
-    exit();
-}
+        if(!isset($_GET["id"])) {
+            header("Location: movies.php");
+            exit();
+        }
 
-$c = getSingleMovieData($_GET["id"]);
+        $c = $Movie->getSingle($_GET["id"]);
 
-if(isset($_GET["success"])){
-    echo "salvestamine õnnestus";
-}
+        if(isset($_GET["success"])){
+            echo "salvestamine õnnestus";
+        }
 
-if(isset($_GET["delete"])){
+        if(isset($_GET["delete"])){
 
-    deleteMovie($_GET["id"]);
+            delete($_GET["id"]);
 
-    header("Location: movies.php");
-    exit();
+            header("Location: movies.php");
+            exit();
 
 }
 

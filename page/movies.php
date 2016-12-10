@@ -170,11 +170,11 @@
 		$html = "<table class='table table-striped table-bordered'>";
 
 		$html .= "<tr>";
-			$html .="<th>< href='?q=".$q."sort=id&direction=".$direction."'>id</a></th>";
-			$html .="<th>< href='?q=".$q."sort=username&direction=".$direction."'>username</a></th>";
-			$html .="<th>< href='?q=".$q."sort=actor&direction=".$direction."'>actor</a></th>";
-			$html .="<th>< href='?q=".$q."sort=movie&direction=".$direction."'>movie</a></th>";
-			$html .="<th>< href='?q=".$q."sort=genre&direction=".$direction."'>genre</a></th>";
+			$html .="<th><a href=?q=".$q."sort=id&direction=".$direction."'>id</a></th>";
+			$html .="<th><a href=''?q=".$q."sort=username&direction=".$direction."'>username</a></th>";
+			$html .="<th><a href=''?q=".$q."sort=actor&direction=".$direction."'>actor</a></th>";
+			$html .="<th><a href=''?q=".$q."sort=movie&direction=".$direction."'>movie</a></th>";
+			$html .="<th><a href=''?q=".$q."sort=genre&direction=".$direction."'>genre</a></th>";
 		$html .= "</tr>";
 
 		foreach($movieData as $i){

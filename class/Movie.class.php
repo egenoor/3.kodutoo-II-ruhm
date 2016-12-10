@@ -1,194 +1,179 @@
 <?php
-class Movie
-{
+class Movie{
 
-    private $connection;
-
-    function __construct($mysqli)
-    {
-
-        $this->connection = $mysqli;
-
-    }
-
-    function delete($id)
-    {
-        $stmt = $this->connection->prepare("UPDATE user_movies SET deleted=NOW() WHERE id=? AND deleted IS NULL");
-        $stmt->bind_param("i", $id);
-
-        // kas õnnestus salvestada
-        if ($stmt->execute()) {
-            // õnnestus
-            echo "Deleted";
+        private $connection;
+        function __construct($mysqli){
+            $this->connection = $mysqli;
         }
 
-        $stmt->close();
+        function delete($id){
+            $stmt = $this->connection->prepare("UPDATE user_movies SET deleted=NOW() WHERE id=? AND deleted IS NULL");
+            $stmt->bind_param("i", $id);
 
-    }
+            // kas õnnestus salvestada
+            if ($stmt->execute()) {
+                // õnnestus
+                echo "Deleted";
+            }
 
-    function get($q, $sort, $direction){
+            $stmt->close();
 
-        //mis sort ja j�rjekord
-        $allowedSortOptions = ["id", "username", "movie_actor", "movie_fav", "movie_genre"];
-        //kas sort on lubatud valikute sees
-        if (!in_array($sort, $allowedSortOptions)) {
-            $sort = "id";
         }
-        echo "Sorteerin: " . $sort . " ";
 
-        //turvaliselt luban ainult 2 valikut
-        $orderBy = "ASC";
-        if ($direction == "descending") {
-            $orderBy = "DESC";
-        }
-        echo "Order: " . $orderBy . " ";
+        function get($q, $sort, $direction){
 
-        if ($q == "") {
+            //mis sort ja j�rjekord
+            $allowedSortOptions = ["id", "username", "movie_actor", "movie_fav", "movie_genre"];
+            //kas sort on lubatud valikute sees
+            if (!in_array($sort, $allowedSortOptions)) {
+                $sort = "id";
+            }
+            echo "Sorteerin: " . $sort . " ";
 
-            echo "ei otsi";
+            //turvaliselt luban ainult 2 valikut
+            $orderBy = "ASC";
+            if ($direction == "descending") {
+                $orderBy = "DESC";
+            }
+            echo "Order: " . $orderBy . " ";
 
-            $stmt = $this->connection->prepare("
-				SELECT id, movie_actor, movie_fav, movie_genre
-				FROM user_movies
-				WHERE deleted IS NULL 
-				ORDER BY $sort $orderBy
-			");
+            if ($q == "") {
+
+                echo "ei otsi";
+
+                $stmt = $this->connection->prepare("
+                    FROM user_movies
+                    WHERE deleted IS NULL 
+                    ORDER BY $sort $orderBy
+                ");
+                echo $this->connection->error;
+            } else {
+
+                echo "Searches: " . $q;
+
+                //teen otsis�na
+                // lisan m�lemale poole %
+                $searchword = "%" . $q . "%";
+
+                $stmt = $this->connection->prepare("
+                    SELECT id, username, movie_actor, movie_fav, movie_genre
+                    FROM user_movies
+                    WHERE deleted IS NULL AND
+                    (id LIKE ? OR username LIKE ?)
+                    ORDER BY $sort $orderBy
+                ");
+                $stmt->bind_param("ss", $searchword, $searchword);
+
+            }
+
             echo $this->connection->error;
-        } else {
 
-            echo "Searches: " . $q;
+            $stmt->bind_result($id, $userName, $favActor, $favMov, $movGenre);
+            $stmt->execute();
 
-            //teen otsis�na
-            // lisan m�lemale poole %
-            $searchword = "%" . $q . "%";
 
-            $stmt = $this->connection->prepare("
-				SELECT id, username, movie_actor, movie_fav, movie_genre
-				FROM user_movies
-				WHERE deleted IS NULL AND
-				(movie_actor LIKE ? OR movie_fav LIKE ?)
-				ORDER BY $sort $orderBy
-			");
-            $stmt->bind_param("ss", $searchword, $searchword);
+            //tekitan massiivi
+            $result = array();
 
+            // tee seda seni, kuni on rida andmeid
+            // mis vastab select lausele
+            while ($stmt->fetch()) {
+
+                //tekitan objekti
+                $movie = new StdClass();
+
+                $movie->id = $id;
+                $movie->username = $userName;
+                $movie->favActor = $favActor;
+                $movie->favMov = $favMov;
+                $movie->favGenre = $movGenre;
+
+                //echo $plate."<br>";
+                // iga kord massiivi lisan juurde nr m�rgi
+                array_push($result, $movie);
+            }
+
+            $stmt->close();
+
+
+            return $result;
         }
 
-        echo $this->connection->error;
-
-        $stmt->bind_result($id, $userName, $favActor, $favMov, $movGenre);
-        $stmt->execute();
-
-
-        //tekitan massiivi
-        $result = array();
-
-        // tee seda seni, kuni on rida andmeid
-        // mis vastab select lausele
-        while ($stmt->fetch()) {
+        function getSingle($edit_id){
+            $stmt = $this->connection->prepare("SELECT movie_actor, movie_fav, movie_genre FROM user_movies WHERE id=? 
+                AND deleted IS NULL");
+            //et näha, mis error on koodis täpsemalt kirjutame echo error
+            echo $this->connection->error;
+            $stmt->bind_param("i", $edit_id);
+            $stmt->bind_result($favActor, $favMov, $movGenre);
+            $stmt->execute();
 
             //tekitan objekti
-            $movie = new StdClass();
+            $movie = new Stdclass();
 
-            $movie->id = $id;
-            $movie->username = $userName;
-            $movie->favActor = $favActor;
-            $movie->favMov = $favMov;
-            $movie->favGenre = $movGenre;
+            if ($stmt->fetch()) {
+                $movie->movie_actor = $favActor;
+                $movie->movie_fav = $favMov;
+                $movie->movie_genre = $movGenre;
 
-            //echo $plate."<br>";
-            // iga kord massiivi lisan juurde nr m�rgi
-            array_push($result, $movie);
+
+            } else {
+
+                header("Location: movies.php");
+                exit();
+            }
+
+            $stmt->close();
+
+            return $movie;
+
         }
 
-        $stmt->close();
+        function save($Username, $favActor, $favMov, $movGenre){
 
+            $stmt = $this->connection->prepare("INSERT INTO user_movies(username, movie_actor, movie_fav, movie_genre) VALUES (?, ?, ?, ?)");
 
-        return $result;
-    }
+            echo $this->connection->error;
 
-    function getSingleMovieData($edit_id){
+            $stmt->bind_param("ssss", $Username, $favActor, $favMov, $movGenre);
 
-        $database = "if16_ege";
+            if ($stmt->execute()) {
+                echo "salvestamine �nnestus";
+            } else {
+                echo "ERROR " . $stmt->error;
+            }
 
-        //echo "id on ".$edit_id;
+            $stmt->close();
+            $this->connection->close();
 
-        $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
-
-        $stmt = $mysqli->prepare("SELECT movie_actor, movie_fav, movie_genre FROM user_movies WHERE id=? 
-			AND deleted IS NULL");
-        //et näha, mis error on koodis täpsemalt kirjutame echo error
-        echo $mysqli->error;
-        $stmt->bind_param("i", $edit_id);
-        $stmt->bind_result($favActor, $favMov, $movGenre);
-        $stmt->execute();
-
-        //tekitan objekti
-        $movie = new Stdclass();
-
-        if ($stmt->fetch()) {
-            $movie->movie_actor = $favActor;
-            $movie->movie_fav = $favMov;
-            $movie->movie_genre = $movGenre;
-
-
-        } else {
-
-            header("Location: movies.php");
-            exit();
         }
 
-        $stmt->close();
-        $mysqli->close();
 
-        return $movie;
+        function cleanInput($input){
 
-    }
+            $input = trim($input);
+            $input = stripslashes($input);
+            $input = htmlspecialchars($input);
 
-    function save($Username, $favActor, $favMov, $movGenre){
+            return $input;
 
-        $stmt = $this->connection->prepare("INSERT INTO user_movies(username, movie_actor, movie_fav, movie_genre) VALUES (?, ?, ?, ?)");
 
-        echo $this->connection->error;
-
-        $stmt->bind_param("ssss", $Username, $favActor, $favMov, $movGenre);
-
-        if ($stmt->execute()) {
-            echo "salvestamine �nnestus";
-        } else {
-            echo "ERROR " . $stmt->error;
         }
 
-        $stmt->close();
-        $this->connection->close();
+        function update($id, $favActor, $favMov, $movGenre){
+            $stmt = $this->connection->prepare("UPDATE user_movies SET movie_actor=?, movie_fav=?, movie_genre=? WHERE id=? 
+                    AND deleted IS NULL");
 
-    }
+            $stmt->bind_param("sssi", $favActor, $favMov, $movGenre, $id);
 
+            // kas õnnestus salvestada
+            if ($stmt->execute()) {
+                // õnnestus
+                echo "salvestus õnnestus!";
+            }
 
-    function cleanInput($input){
+            $stmt->close();
 
-        $input = trim($input);
-        $input = stripslashes($input);
-        $input = htmlspecialchars($input);
-
-        return $input;
-
-
-    }
-
-    function update($id, $favActor, $favMov, $movGenre){
-        $stmt = $this->connection->prepare("UPDATE user_movies SET movie_actor=?, movie_fav=?, movie_genre=? WHERE id=? 
-                AND deleted IS NULL");
-
-        $stmt->bind_param("sssi", $favActor, $favMov, $movGenre, $id);
-
-        // kas õnnestus salvestada
-        if ($stmt->execute()) {
-            // õnnestus
-            echo "salvestus õnnestus!";
         }
-
-        $stmt->close();
-
-    }
 }
 ?>

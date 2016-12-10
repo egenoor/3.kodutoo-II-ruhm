@@ -1,7 +1,7 @@
 <?php
 
 
-	require("functions.php");
+	require("../functions.php");
 	
 	//kui ei ole kasutaja id'd
 	if (!isset($_SESSION["userId"])) {
