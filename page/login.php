@@ -19,9 +19,7 @@
 	$signupUsernameError = "";
 	$signupEmailError = "";
 	$signupPasswordError = "";
-	$signupCommentError = "";
 	$signupPassword = "";
-	$signupComment = "";
 	$signupUsername = "";
 	$signupEmail = "";
 	$signupGender = "";
@@ -80,19 +78,6 @@
 
 	}
 
-	if (isset ( $_POST["signupComment"] ) ) {
-
-		if ( empty ( $_POST["signupComment"] ) ) {
-
-			//kommentaar oli tühi
-			$signupCommentError = "See väli on kohustuslik!" ;
-		} else {
-
-			$signupComment = $_POST["signupComment"];
-		}
-
-	}
-
 	if ( isset ( $_POST["signupAge"] ) &&
 		!empty ( $_POST["signupAge"] )) {
 
@@ -129,7 +114,6 @@
 	    isset($_POST["signupEmail"]) &&
 		isset($_POST["signupPassword"]) &&
 		isset($_POST["signupWebsite"]) &&
-		isset($_POST["signupComment"]) &&
 		isset($_POST["signupAge"]) &&
 		$signupEmailError == "" &&
 		empty ($signupPasswordError)) {
@@ -139,9 +123,9 @@
 
 		$password = hash("sha512", $_POST["signupPassword"]);
 
-		$User->signUp($Helper->cleanInput($_POST['signupUsername']), 
-		$Helper->cleanInput($_POST['signupEmail'], $_POST['signupPassword'], 
-		$_POST['signupWebsite'], $_POST['signupComment'], $_POST['signupAge']));
+		$User->signUp($Helper->cleanInput($_POST['signupUsername']),
+		$Helper->cleanInput($_POST['signupEmail'], $password,
+		$_POST['signupWebsite'], $_POST['signupAge']));
 
 
 
@@ -174,7 +158,7 @@
                 <form method="POST">
 
                     <p style="color:red;"><?=$error;?></p>
-
+                    var_dump();
                     <label>Username:</label><br>
                     <input name="loginUsername" type="text" class="form-control" value="<?php if(isset($_POST["loginUsername"]))
                     { echo $_POST['loginUsername'];}?>">
@@ -211,12 +195,6 @@
 
                     <label>Website:</label><br>
                     <input name="signupWebsite" type="text" value="<?=$signupWebsite;?>">
-
-                    <br><br>
-
-                    <label>Comment:</label><br>
-                    <textarea class="form-control" rows="5" cols="10"><?=$signupComment;?></textarea>
-                    <?php echo $signupCommentError; ?>
 
                     <br><br>
 

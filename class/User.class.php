@@ -12,16 +12,16 @@ class User {
 	}
 	
 	/*TEISED FUNKTSIOONI*/
-	function signUp ($username, $email, $password, $website, $comment, $age)	{
+	function signUp ($username, $email, $password, $website, $age)	{
 		
-		$stmt = $this->connection->prepare("INSERT INTO user_sample (username, email, password, website, comment, age) VALUES (?, ?, ?, ?, ?, ?)");
+		$stmt = $this->connection->prepare("INSERT INTO user_sample (username, email, password, website, age) VALUES (?, ?, ?, ?, ?)");
 	
 		echo $this->connection->error;
 		
-		$stmt->bind_param("ssssss", $username, $email, $password, $website, $comment, $age);
+		$stmt->bind_param("sssss", $username, $email, $password, $website, $age);
 		
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus";
+			echo "salvestamine ï¿½nnestus";
 		} else {
 		 	echo "ERROR ".$stmt->error;
 		}
