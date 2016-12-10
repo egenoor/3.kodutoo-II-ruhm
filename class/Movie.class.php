@@ -29,7 +29,7 @@ class Movie
     function get($q, $sort, $direction){
 
         //mis sort ja j�rjekord
-        $allowedSortOptions = ["id", "movie_actor", "movie_fav", "movie_genre"];
+        $allowedSortOptions = ["id", "username", "movie_actor", "movie_fav", "movie_genre"];
         //kas sort on lubatud valikute sees
         if (!in_array($sort, $allowedSortOptions)) {
             $sort = "id";
@@ -63,7 +63,7 @@ class Movie
             $searchword = "%" . $q . "%";
 
             $stmt = $this->connection->prepare("
-				SELECT id, movie_actor, movie_fav, movie_genre
+				SELECT id, username, movie_actor, movie_fav, movie_genre
 				FROM user_movies
 				WHERE deleted IS NULL AND
 				(movie_actor LIKE ? OR movie_fav LIKE ?)
@@ -75,7 +75,7 @@ class Movie
 
         echo $this->connection->error;
 
-        $stmt->bind_result($id, $favActor, $favMov, $movGenre);
+        $stmt->bind_result($id, $userName, $favActor, $favMov, $movGenre);
         $stmt->execute();
 
 
@@ -90,6 +90,7 @@ class Movie
             $movie = new StdClass();
 
             $movie->id = $id;
+            $movie->username = $userName;
             $movie->favActor = $favActor;
             $movie->favMov = $favMov;
             $movie->favGenre = $movGenre;

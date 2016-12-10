@@ -58,7 +58,8 @@
 		!empty($_POST["favMov"]) &&
 		!empty($_POST["movGenre"])) {
 
-		saveData($_SESSION["userName"], $_POST["favActor"], $_POST["favMov"], $_POST["movGenre"]);
+		$Movie->save($Helper->cleanInput($_SESSION["userName"]), $Helper->cleanInput($_POST["favActor"]),
+			$Helper->cleanInput($_POST["favMov"]), $Helper->cleanInput($_POST["movGenre"]));
 
 		} 
 	elseif(isset($_POST["favActor"]) &&
@@ -72,9 +73,6 @@
 		}
 
 	echo $error;
-	//saan filmi andmed
-	$Movie->save($Helper->cleanInput($_POST["movie_actor"]), $Helper->cleanInput($_POST["movie_fav"]),
-		$Helper->cleanInput($_POST["movie_genre"]));
 	
 		//sorteerib
 	if(isset($_GET["sort"]) && isset($_GET["direction"])){
@@ -185,7 +183,7 @@
 				$html .= "<td>".$i->Username."</td>";
 				$html .= "<td>".$i->favActor."</td>";
 				$html .= "<td>".$i->favMov."</td>";
-				$html .= "<td>".$i->movGenre."</td>";
+				$html .= "<td>".$i->favGenre."</td>";
 				$html .= "<td><a href='edit.php?id=".$i->id."'>edit.php?id=".$i->id."</a></td>";
 				$html .= "</tr>";
 			}
