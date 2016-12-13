@@ -123,9 +123,8 @@
 
 		$password = hash("sha512", $_POST["signupPassword"]);
 
-		$User->signUp($Helper->cleanInput($_POST['signupUsername']),
-		$Helper->cleanInput($_POST['signupEmail'], $password,
-		$_POST['signupWebsite'], $_POST['signupAge']));
+		$User->signUp($Helper->cleanInput($_POST['signupUsername']), $Helper->cleanInput($_POST['signupEmail']),
+		$Helper->cleanInput ($password),$Helper->cleanInput($_POST['signupAge']),$Helper->cleanInput($_POST['signupWebsite']));
 
 
 
@@ -142,7 +141,6 @@
 
 
 	}
-
 	?>
 
 <?php require("../header.php"); ?>
@@ -158,7 +156,6 @@
                 <form method="POST">
 
                     <p style="color:red;"><?=$error;?></p>
-                    var_dump();
                     <label>Username:</label><br>
                     <input name="loginUsername" type="text" class="form-control" value="<?php if(isset($_POST["loginUsername"]))
                     { echo $_POST['loginUsername'];}?>">
