@@ -26,18 +26,19 @@ class Movie{
             $allowedSortOptions = ["id", "username", "movie_actor", "movie_fav", "movie_genre"];
             //kas sort on lubatud valikute sees
             if (!in_array($sort, $allowedSortOptions)) {
-                $sort = "id";
+                    $sort = "id";
             }
             echo "Sorteerin: " . $sort . " ";
 
             //turvaliselt luban ainult 2 valikut
             $orderBy = "ASC";
-            if ($direction == "descending") {
+            if ($direction == "descending"){
                 $orderBy = "DESC";
             }
-            echo "Order: " . $orderBy . " ";
 
-            if ($q == "") {
+            echo "Order: " . $orderBy ." ";
+
+            if ($q == ""){
 
                 echo "ei otsi";
 
@@ -54,7 +55,7 @@ class Movie{
 
                 //teen otsis�na
                 // lisan m�lemale poole %
-                $searchword = "%" . $q . "%";
+                $searchword = "%".$q."%";
 
                 $stmt = $this->connection->prepare("
                     SELECT id, username, movie_actor, movie_fav, movie_genre

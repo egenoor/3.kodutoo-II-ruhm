@@ -48,7 +48,7 @@
 			$movGenre = $Helper->cleanInput($_POST["movGenre"]);
 		}
 
-	$error= "";
+$error= "";
 
 	if(isset($_POST["favActor"]) &&
 		isset($_POST["favMov"]) &&
@@ -60,7 +60,7 @@
 		$Movie->save($Helper->cleanInput($_SESSION["userName"]), $Helper->cleanInput($_POST["favActor"]),
 			$Helper->cleanInput($_POST["favMov"]), $Helper->cleanInput($_POST["movGenre"]));
 
-		} 
+		}
 	elseif(isset($_POST["favActor"]) &&
 			isset($_POST["favMov"]) &&
 			isset($_POST["movGenre"]) &&
@@ -169,11 +169,11 @@
 		$html = "<table class='table table-striped table-bordered'>";
 
 		$html .= "<tr>";
-			$html .="<th><a href=?q=".$q."sort=id&direction=".$direction."'>id</a></th>";
-			$html .="<th><a href=''?q=".$q."sort=username&direction=".$direction."'>username</a></th>";
-			$html .="<th><a href=''?q=".$q."sort=actor&direction=".$direction."'>actor</a></th>";
-			$html .="<th><a href=''?q=".$q."sort=movie&direction=".$direction."'>movie</a></th>";
-			$html .="<th><a href=''?q=".$q."sort=genre&direction=".$direction."'>genre</a></th>";
+			$html .= "<th><a href=?q=".$q."&sort=id&direction=".$direction."'>id</a></th>";
+			$html .= "<th><a href='?q=".$q."&sort=username&direction=".$direction."'>username</a></th>";
+			$html .= "<th><a href='?q=".$q."&sort=actor&direction=".$direction."'>actor</a></th>";
+			$html .= "<th><a href='?q=".$q."&sort=movie&direction=".$direction."'>movie</a></th>";
+			$html .= "<th><a href='?q=".$q."&sort=genre&direction=".$direction."'>genre</a></th>";
 		$html .= "</tr>";
 
 		foreach($movieData as $i){
@@ -183,13 +183,17 @@
 				$html .= "<td>".$i->favActor."</td>";
 				$html .= "<td>".$i->favMov."</td>";
 				$html .= "<td>".$i->favGenre."</td>";
-				$html .= "<td><a href='edit.php?id=".$i->id."'>edit.php?id=".$i->id."</a></td>";
-				$html .= "</tr>";
-			}
+				$html .= "<td>
+							<a href='edit.php?id=".$i->id."'>
+          					<span class=\"glyphicon glyphicon-cog\"></span>
+							</a></td>";
 
-			$html .= "</table>";
+			$html .= "</tr>";
+		}
 
-			echo $html;
+		$html .= "</table>";
+
+		echo $html;
 	?>
 
 </div>
