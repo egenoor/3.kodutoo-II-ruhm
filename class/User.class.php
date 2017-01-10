@@ -60,7 +60,7 @@ class User {
 				
 				$_SESSION["message"] = "<h1>Tere tulemast!</h1>";
 				
-				header("Location: data.php");
+				header("Location: movies.php");
 				exit();
 				
 			}else {

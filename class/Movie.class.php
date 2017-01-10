@@ -8,6 +8,7 @@ class Movie{
 
         function delete($id){
             $stmt = $this->connection->prepare("UPDATE user_movies SET deleted=NOW() WHERE id=? AND deleted IS NULL");
+            echo $this->connection->error;
             $stmt->bind_param("i", $id);
 
             // kas õnnestus salvestada
@@ -25,46 +26,45 @@ class Movie{
             //mis sort ja j�rjekord
             $allowedSortOptions = ["id", "username", "movie_actor", "movie_fav", "movie_genre"];
             //kas sort on lubatud valikute sees
-            if (!in_array($sort, $allowedSortOptions)) {
+            if (!in_array($sort, $allowedSortOptions)){
                     $sort = "id";
             }
-            echo "Sorteerin: " . $sort . " ";
+            echo "Sorteerin: " .$sort. " ";
 
             //turvaliselt luban ainult 2 valikut
             $orderBy = "ASC";
-            if ($direction == "descending"){
-                $orderBy = "DESC";
+            if($direction == "descending"){
+                    $orderBy = "DESC";
             }
-
-            echo "Order: " . $orderBy ." ";
+            echo "Order: " .$orderBy." ";
 
             if ($q == ""){
 
-                echo "ei otsi";
+                    echo "ei otsi";
 
-                $stmt = $this->connection->prepare("
-                    SELECT id, username, movie_actor, movie_fav, movie_genre
-                    FROM user_movies
-                    WHERE deleted IS NULL 
-                    ORDER BY $sort $orderBy
-                ");
-                echo $this->connection->error;
+                    $stmt = $this->connection->prepare("
+                        SELECT id, username, movie_actor, movie_fav, movie_genre
+                        FROM user_movies
+                        WHERE deleted IS NULL 
+                        ORDER BY $sort $orderBy
+                     ");
+                    echo $this->connection->error;
             } else {
 
-                echo "Searches: " . $q;
+                    echo "Searches: " .$q;
 
-                //teen otsis�na
-                // lisan m�lemale poole %
-                $searchword = "%".$q."%";
+                    //teen otsis�na
+                    // lisan m�lemale poole %
+                    $searchword = "%".$q."%";
 
-                $stmt = $this->connection->prepare("
-                    SELECT id, username, movie_actor, movie_fav, movie_genre
-                    FROM user_movies
-                    WHERE deleted IS NULL AND
-                    (id LIKE ? OR username LIKE ?)
-                    ORDER BY $sort $orderBy
-                ");
-                $stmt->bind_param("ss", $searchword, $searchword);
+                    $stmt = $this->connection->prepare("
+                        SELECT id, username, movie_actor, movie_fav, movie_genre
+                        FROM user_movies
+                        WHERE deleted IS NULL AND
+                        (id LIKE ? OR username LIKE ?)
+                        ORDER BY $sort $orderBy
+                    ");
+                    $stmt->bind_param("ss", $searchword, $searchword);
 
             }
 

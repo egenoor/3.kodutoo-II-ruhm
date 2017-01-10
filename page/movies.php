@@ -106,58 +106,69 @@ $error= "";
 
 <div class="container">
 
-	<p><a href="data.php"> <button onclick="goBack()">Go Back</button></a></p>
-	<h1>Movies</h1>
-	<?=$msg;?>
-	<p>
-		Welcome <?=$_SESSION["userName"];?>!
-		<a href="?logout=1">Log out</a>
-	</p>
+	<div class="row">
 
-	<h2> Add data </h2>
-	<form method="POST">
+		<div class="col-sm-3">
 
-		<label>Favorite actor:</label><br>
-		<input name="favActor" type="text" value="<?=$favActor;?>">
+			<p><a href="?logout=1"> <button onclick="goBack()">Log out</button></a></p>
+			<h1>Movies</h1>
+			<?=$msg;?>
+			<p>
+				Welcome <?=$_SESSION["userName"];?>!
+			</p>
 
-		<br><br>
+			<h2> Add data </h2>
+			<form method="POST">
 
-		<label>Favorite movie:</label><br>
-		<input name="favMov" type="text" value="<?=$favMov;?>">
+				<label>Favorite actor:</label><br>
+				<input name="favActor" type="text" class="form-control" value="<?=$favActor;?>">
 
-		<br><br>
+				<br><br>
 
+				<label>Favorite movie:</label><br>
+				<input name="favMov" type="text" class="form-control" value="<?=$favMov;?>">
 
-		<label>Movie genre:</label><br>
-		<select name="movGenre">
-			<option value="" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Genre</option>
-			<option value="Action" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Action</option>
-			<option value="Comedy" <?php echo $result['genre'] == 'Comedy' ? 'selected' : ''?>>Comedy</option>
-			<option value="Crime" <?php echo $result['genre'] == 'Crime' ? 'selected' : ''?>>Crime</option>
-			<option value="Adventure" <?php echo $result['genre'] == 'Adventure' ? 'selected' : ''?> >Adventure</option>
-			<option value="War" <?php echo $result['genre'] == 'War' ? 'selected' : ''?>>War</option>
-			<option value="Sci-Fi" <?php echo $result['genre'] == 'Sci-Fi' ? 'selected' : ''?>>Sci-Fi</option>
-			<option value="Romance" <?php echo $result['genre'] == 'Romance' ? 'selected' : ''?>>Romance</option>
-			<option value="Horror" <?php echo $result['genre'] == 'Horror' ? 'selected' : ''?> >Horror</option>
-			<option value="Documentary" <?php echo $result['genre'] == 'Documentary' ? 'selected' : ''?>>Documentary</option>
-			<option value="Fantasy" <?php echo $result['genre'] == 'Fantasy' ? 'selected' : ''?>>Fantasy</option>
-		</select>
-		<input type="submit" value="Submit">
+				<br><br>
 
 
-	</form>
+				<label>Movie genre:</label><br>
+				<select name="movGenre">
+					<option value="" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Genre</option>
+					<option value="Action" <?php echo $result['genre'] == 'Action' ? 'selected' : ''?> >Action</option>
+					<option value="Comedy" <?php echo $result['genre'] == 'Comedy' ? 'selected' : ''?>>Comedy</option>
+					<option value="Crime" <?php echo $result['genre'] == 'Crime' ? 'selected' : ''?>>Crime</option>
+					<option value="Adventure" <?php echo $result['genre'] == 'Adventure' ? 'selected' : ''?> >Adventure</option>
+					<option value="War" <?php echo $result['genre'] == 'War' ? 'selected' : ''?>>War</option>
+					<option value="Sci-Fi" <?php echo $result['genre'] == 'Sci-Fi' ? 'selected' : ''?>>Sci-Fi</option>
+					<option value="Romance" <?php echo $result['genre'] == 'Romance' ? 'selected' : ''?>>Romance</option>
+					<option value="Horror" <?php echo $result['genre'] == 'Horror' ? 'selected' : ''?> >Horror</option>
+					<option value="Documentary" <?php echo $result['genre'] == 'Documentary' ? 'selected' : ''?>>Documentary</option>
+					<option value="Fantasy" <?php echo $result['genre'] == 'Fantasy' ? 'selected' : ''?>>Fantasy</option>
+				</select>
+				<input class="btn btn-default btn-sm" type="submit" value="Submit">
 
-	<h2>Movies</h2>
-	
-	<form>
-		<input type="search" name="q">
-		<input type="submit" value="Otsi">
-	</form>
-	
+			</form>
+
+		</div>
+
+	</div>
+
+
+
+	<div class="row">
+
+			<div class="col-sm-3">
+				<h2>Movies</h2>
+				<form>
+					<input type="search" class="form-control" name="q">
+					<input class="btn btn-default btn-sm" type="submit" value="Search">
+				</form>
+			</div>
+	</div>
 
 
 	<?php
-		
+
 		$direction = "ascending";
 		if(isset($_GET["direction"])){
 			if ($_GET["direction"] == "ascending"){
@@ -165,7 +176,6 @@ $error= "";
 			}
 
 		}
-
 		$html = "<table class='table table-striped table-bordered'>";
 
 		$html .= "<tr>";
@@ -195,7 +205,7 @@ $error= "";
 
 		echo $html;
 	?>
-
 </div>
+
 
 <?php require("../footer.php"); ?>

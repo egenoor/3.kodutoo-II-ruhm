@@ -9,7 +9,7 @@
 	if (isset($_SESSION["userId"])) {
 
 		//suunan sisselogimise lehele
-		header("Location: data.php");
+		header("Location: movies.php");
 		exit();
 	}
 
@@ -174,29 +174,29 @@
                 <form method="POST">
 
                     <label>Username:</label><br>
-                    <input name="signupUsername" type="text" value="<?=$signupUsername;?>">
+                    <input name="signupUsername" type="text" class="form-control" value="<?=$signupUsername;?>">
                     <?php echo $signupUsernameError; ?>
 
                     <br><br>
 
                     <label>Email:</label><br>
-                    <input name="signupEmail" type="text" value="<?=$signupEmail;?>">
+                    <input name="signupEmail" type="text" class="form-control" value="<?=$signupEmail;?>">
                     <?php echo $signupEmailError; ?>
 
                     <br><br>
 
-                    <input name="signupPassword" type="password" placeholder="Password">
+                    <input name="signupPassword" type="password" class="form-control" placeholder="Password">
                     <?php echo $signupPasswordError; ?>
 
                     <br><br>
 
                     <label>Website:</label><br>
-                    <input name="signupWebsite" type="text" value="<?=$signupWebsite;?>">
+                    <input name="signupWebsite" type="text" class="form-control" value="<?=$signupWebsite;?>">
 
                     <br><br>
 
                     <label>Age:</label><br>
-                    <input name="signupAge" type="number" value="<?=$signupAge;?>">
+                    <input name="signupAge" type="number" class="form-control" value="<?=$signupAge;?>">
 
                     <br><br>
                     <label>Gender:</label><br>
