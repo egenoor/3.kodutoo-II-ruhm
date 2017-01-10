@@ -8,7 +8,6 @@ class Movie{
 
         function delete($id){
             $stmt = $this->connection->prepare("UPDATE user_movies SET deleted=NOW() WHERE id=? AND deleted IS NULL");
-            echo $this->connection->error;
             $stmt->bind_param("i", $id);
 
             // kas õnnestus salvestada
@@ -48,7 +47,7 @@ class Movie{
                         WHERE deleted IS NULL 
                         ORDER BY $sort $orderBy
                      ");
-                    echo $this->connection->error;
+
             } else {
 
                     echo "Searches: " .$q;
@@ -68,7 +67,6 @@ class Movie{
 
             }
 
-            echo $this->connection->error;
 
             $stmt->bind_result($id, $userName, $favActor, $favMov, $movGenre);
             $stmt->execute();
@@ -135,12 +133,11 @@ class Movie{
 
             $stmt = $this->connection->prepare("INSERT INTO user_movies(username, movie_actor, movie_fav, movie_genre) VALUES (?, ?, ?, ?)");
 
-            echo $this->connection->error;
 
             $stmt->bind_param("ssss", $userName, $favActor, $favMov, $movGenre);
 
             if ($stmt->execute()) {
-                echo "salvestamine �nnestus";
+                echo "Saved!";
             } else {
                 echo "ERROR " . $stmt->error;
             }
