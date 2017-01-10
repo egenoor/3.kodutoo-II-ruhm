@@ -143,7 +143,6 @@ class Movie{
             }
 
             $stmt->close();
-            $this->connection->close();
 
         }
 
